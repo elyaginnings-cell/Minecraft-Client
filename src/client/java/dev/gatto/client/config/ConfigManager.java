@@ -55,7 +55,6 @@ public class ConfigManager {
             root.addProperty("clientName", GattoClient.CLIENT_NAME);
 
             Files.writeString(configFile, gson.toJson(root));
-            GattoClient.LOGGER.info("Config saved");
         } catch (Exception e) {
             GattoClient.LOGGER.error("Failed to save config", e);
         }
@@ -76,8 +75,8 @@ public class ConfigManager {
                 for (Module module : GattoClient.getInstance().getModuleManager().getModules()) {
                     if (modulesObj.has(module.getName())) {
                         JsonObject modObj = modulesObj.getAsJsonObject(module.getName());
-                        if (modObj.has("enabled") && modObj.get("enabled").getAsBoolean()) {
-                            module.setEnabled(true);
+                        if (modObj.has("enabled")) {
+                            module.setEnabled(modObj.get("enabled").getAsBoolean(), false);
                         }
                         if (modObj.has("keybind")) {
                             module.setKeybind(modObj.get("keybind").getAsInt());

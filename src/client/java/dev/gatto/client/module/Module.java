@@ -24,22 +24,32 @@ public abstract class Module {
     }
 
     public void toggle() {
-        setEnabled(!enabled);
+        setEnabled(!enabled, true);
     }
 
     public void setEnabled(boolean enabled) {
+        setEnabled(enabled, true);
+    }
+
+    public void setEnabled(boolean enabled, boolean notify) {
         if (this.enabled == enabled) return;
         this.enabled = enabled;
         if (enabled) {
             onEnable();
-            GattoClient.getInstance().getNotificationManager().add(name + " enabled",
-                dev.gatto.client.notification.NotificationManager.Type.SUCCESS);
+            if (notify && GattoClient.getInstance() != null) {
+                GattoClient.getInstance().getNotificationManager().add(name + " enabled",
+                    dev.gatto.client.notification.NotificationManager.Type.SUCCESS);
+            }
         } else {
             onDisable();
-            GattoClient.getInstance().getNotificationManager().add(name + " disabled",
-                dev.gatto.client.notification.NotificationManager.Type.INFO);
+            if (notify && GattoClient.getInstance() != null) {
+                GattoClient.getInstance().getNotificationManager().add(name + " disabled",
+                    dev.gatto.client.notification.NotificationManager.Type.INFO);
+            }
         }
-        GattoClient.getInstance().getConfigManager().save();
+        if (notify && GattoClient.getInstance() != null) {
+            GattoClient.getInstance().getConfigManager().save();
+        }
     }
 
     public boolean isEnabled() {

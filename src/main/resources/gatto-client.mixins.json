@@ -3,6 +3,8 @@
   "package": "dev.gatto.client.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "GameRendererMixin",
+    "ChatComponentMixin"
   ],
   "injectors": {
     "defaultRequire": 1

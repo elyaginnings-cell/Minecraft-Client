@@ -2,10 +2,13 @@ package dev.gatto.client.module;
 
 import dev.gatto.client.module.modules.combat.AttackIndicator;
 import dev.gatto.client.module.modules.combat.CpsCounter;
+import dev.gatto.client.module.modules.combat.TargetHud;
 import dev.gatto.client.module.modules.hud.*;
+import dev.gatto.client.module.modules.misc.ChatTimestamps;
 import dev.gatto.client.module.modules.misc.SprintStatus;
 import dev.gatto.client.module.modules.movement.ToggleSprint;
 import dev.gatto.client.module.modules.movement.Zoom;
+import dev.gatto.client.module.modules.render.CustomCrosshair;
 import dev.gatto.client.module.modules.render.Fullbright;
 import dev.gatto.client.module.modules.render.NoHurtCam;
 
@@ -17,19 +20,14 @@ public class ModuleManager {
     private final List<Module> modules = new ArrayList<>();
 
     public void init() {
-        // Movement
         register(new ToggleSprint());
         register(new Zoom());
-
-        // Render
         register(new Fullbright());
         register(new NoHurtCam());
-
-        // Combat
+        register(new CustomCrosshair());
         register(new CpsCounter());
         register(new AttackIndicator());
-
-        // HUD
+        register(new TargetHud());
         register(new FpsHud());
         register(new PingHud());
         register(new Coordinates());
@@ -39,9 +37,8 @@ public class ModuleManager {
         register(new ClockHud());
         register(new SessionHud());
         register(new Watermark());
-
-        // Misc
         register(new SprintStatus());
+        register(new ChatTimestamps());
     }
 
     private void register(Module module) {
@@ -53,37 +50,26 @@ public class ModuleManager {
     }
 
     public List<Module> getModulesByCategory(Category category) {
-        return modules.stream()
-                .filter(m -> m.getCategory() == category)
-                .toList();
+        return modules.stream().filter(m -> m.getCategory() == category).toList();
     }
 
     public Optional<Module> getModule(String name) {
-        return modules.stream()
-                .filter(m -> m.getName().equalsIgnoreCase(name))
-                .findFirst();
+        return modules.stream().filter(m -> m.getName().equalsIgnoreCase(name)).findFirst();
     }
 
     public <T extends Module> Optional<T> getModule(Class<T> clazz) {
-        return modules.stream()
-                .filter(clazz::isInstance)
-                .map(clazz::cast)
-                .findFirst();
+        return modules.stream().filter(clazz::isInstance).map(clazz::cast).findFirst();
     }
 
     public void onTick() {
         for (Module module : modules) {
-            if (module.isEnabled()) {
-                module.onTick();
-            }
+            if (module.isEnabled()) module.onTick();
         }
     }
 
     public void onRender(float tickDelta) {
         for (Module module : modules) {
-            if (module.isEnabled()) {
-                module.onRender(tickDelta);
-            }
+            if (module.isEnabled()) module.onRender(tickDelta);
         }
     }
 }
