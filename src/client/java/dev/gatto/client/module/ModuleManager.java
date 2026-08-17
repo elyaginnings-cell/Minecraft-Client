@@ -1,9 +1,14 @@
 package dev.gatto.client.module;
 
+import dev.gatto.client.module.modules.combat.CpsCounter;
+import dev.gatto.client.module.modules.hud.Coordinates;
 import dev.gatto.client.module.modules.hud.FpsHud;
+import dev.gatto.client.module.modules.hud.PingHud;
 import dev.gatto.client.module.modules.hud.Watermark;
 import dev.gatto.client.module.modules.movement.ToggleSprint;
+import dev.gatto.client.module.modules.movement.Zoom;
 import dev.gatto.client.module.modules.render.Fullbright;
+import dev.gatto.client.module.modules.render.NoHurtCam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +18,21 @@ public class ModuleManager {
     private final List<Module> modules = new ArrayList<>();
 
     public void init() {
+        // Movement
         register(new ToggleSprint());
+        register(new Zoom());
+
+        // Render
         register(new Fullbright());
+        register(new NoHurtCam());
+
+        // Combat
+        register(new CpsCounter());
+
+        // HUD
         register(new FpsHud());
+        register(new PingHud());
+        register(new Coordinates());
         register(new Watermark());
     }
 
