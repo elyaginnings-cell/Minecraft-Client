@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "gatto-client",
+  "version": "${version}",
+  "name": "Gatto Client",
+  "description": "A polished, modular Fabric client for Minecraft 1.21.11 focused on legitimate PvP utilities, HUD, and QoL.",
+  "authors": [
+    "Gatto"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/gatto-client/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "dev.gatto.client.GattoClient"
+    ]
+  },
+  "mixins": [
+    "gatto-client.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.0",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
