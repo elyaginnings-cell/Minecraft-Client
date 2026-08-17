@@ -1,10 +1,9 @@
 package dev.gatto.client.module;
 
+import dev.gatto.client.module.modules.combat.AttackIndicator;
 import dev.gatto.client.module.modules.combat.CpsCounter;
-import dev.gatto.client.module.modules.hud.Coordinates;
-import dev.gatto.client.module.modules.hud.FpsHud;
-import dev.gatto.client.module.modules.hud.PingHud;
-import dev.gatto.client.module.modules.hud.Watermark;
+import dev.gatto.client.module.modules.hud.*;
+import dev.gatto.client.module.modules.misc.SprintStatus;
 import dev.gatto.client.module.modules.movement.ToggleSprint;
 import dev.gatto.client.module.modules.movement.Zoom;
 import dev.gatto.client.module.modules.render.Fullbright;
@@ -28,12 +27,21 @@ public class ModuleManager {
 
         // Combat
         register(new CpsCounter());
+        register(new AttackIndicator());
 
         // HUD
         register(new FpsHud());
         register(new PingHud());
         register(new Coordinates());
+        register(new ArmorHud());
+        register(new PotionHud());
+        register(new Keystrokes());
+        register(new ClockHud());
+        register(new SessionHud());
         register(new Watermark());
+
+        // Misc
+        register(new SprintStatus());
     }
 
     private void register(Module module) {

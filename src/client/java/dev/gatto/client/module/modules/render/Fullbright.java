@@ -8,15 +8,12 @@ import net.minecraft.world.effect.MobEffects;
 
 public class Fullbright extends Module {
     public Fullbright() {
-        super("Fullbright", "Maximum brightness", Category.RENDER);
+        super("Fullbright", "Maximum brightness / night vision", Category.RENDER);
     }
 
     @Override
     public void onEnable() {
-        Minecraft client = Minecraft.getInstance();
-        if (client.player != null) {
-            client.player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, -1, 0, false, false, false));
-        }
+        apply();
     }
 
     @Override
@@ -29,6 +26,10 @@ public class Fullbright extends Module {
 
     @Override
     public void onTick() {
+        apply();
+    }
+
+    private void apply() {
         Minecraft client = Minecraft.getInstance();
         if (client.player != null && !client.player.hasEffect(MobEffects.NIGHT_VISION)) {
             client.player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, -1, 0, false, false, false));
