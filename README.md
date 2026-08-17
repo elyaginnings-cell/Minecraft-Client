@@ -1,68 +1,51 @@
 # Gatto Client
 
-A modular Fabric client for **Minecraft 1.21.11** focused on legitimate PvP utilities, a clean Click GUI, configurable HUD, and quality-of-life features.
+A modular Fabric client for **Minecraft 1.21.11**.
 
-**Default client name:** Gatto Client  
-**Loader:** Fabric  
-**Minecraft:** 1.21.11
+**Open GUI:** Right Shift
 
-## Features
-
-### Core Systems
-- Fully modular architecture (enable/disable + keybind + per-module settings)
-- Persistent JSON config (`config/gatto-client/`)
-- Theme system (Dark / Light / Custom)
-- Notification system
-- Click GUI with settings panel + keybind editor (Right Shift)
-
-### Modules
+## Modules
 
 **Movement**
 - ToggleSprint
-- Zoom (with amount setting)
+- Zoom
 
 **Render**
 - Fullbright
-- NoHurtCam
+- NoHurtCam (real mixin)
+- CustomCrosshair (size, gap, thickness, dot, outline, color)
 
 **Combat**
 - CPS Counter
 - Attack Cooldown Indicator
+- Target HUD
 
 **HUD**
-- FPS
-- Ping
-- Coordinates
+- FPS / Ping / Coordinates
 - Armor durability
 - Potion effects
-- Keystrokes (WASD + LMB/RMB + Space)
-- Clock (real time)
-- Session timer
+- Keystrokes
+- Clock + Session timer
 - Watermark
 
 **Misc**
 - Sprint Status
+- Chat Timestamps
 
-## Controls
+## Features
+- Modular system with keybinds + settings
+- Persistent config
+- Themes
+- Notifications
+- Click GUI with settings panel + keybind editor
 
-- **Right Shift** — Open/Close Click GUI
-- Left click module = Toggle
-- Right click module = Open settings / keybind editor
-
-## Building
+## Build
 
 ```bash
 ./gradlew build
 ```
 
-Output jar will be in `build/libs/`.
-
-## Running in development
-
-```bash
-./gradlew runClient
-```
+Jar will be in `build/libs/`.
 
 ---
-
-Made for Gatto ✨
+Made for Gatto
