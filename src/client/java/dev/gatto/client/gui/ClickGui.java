@@ -9,10 +9,11 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClickGui extends Screen {
-    private Category selectedCategory = Category.COMBAT;
+    private Category selectedCategory = null;
     private Module selectedModule = null;
     private int panelX = 40;
     private int panelY = 40;
@@ -27,18 +28,39 @@ public class ClickGui extends Screen {
         super(Component.literal("Gatto Client"));
     }
 
+    private List<Category> getActiveCategories() {
+        List<Category> active = new ArrayList<>();
+        for (Category cat : Category.values()) {
+            if (!GattoClient.getInstance().getModuleManager().getModulesByCategory(cat).isEmpty()) {
+                active.add(cat);
+            }
+        }
+        return active;
+    }
+
+    private Category ensureSelectedCategory() {
+        List<Category> active = getActiveCategories();
+        if (active.isEmpty()) return Category.COMBAT;
+        if (selectedCategory == null || !active.contains(selectedCategory)) {
+            selectedCategory = active.get(0);
+        }
+        return selectedCategory;
+    }
+
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         graphics.fill(0, 0, width, height, 0x90000000);
 
         ThemeManager.Theme theme = GattoClient.getInstance().getThemeManager().getCurrent();
+        Category currentCat = ensureSelectedCategory();
 
         graphics.drawString(font, GattoClient.CLIENT_NAME, panelX, panelY - 18, theme.accent, true);
 
-        // Categories
+        // Categories – only those that actually have modules
+        List<Category> activeCats = getActiveCategories();
         int y = panelY;
-        for (Category cat : Category.values()) {
-            boolean selected = cat == selectedCategory;
+        for (Category cat : activeCats) {
+            boolean selected = cat == currentCat;
             boolean hovered = mouseX >= panelX && mouseX <= panelX + categoryWidth &&
                     mouseY >= y && mouseY <= y + categoryHeight;
 
@@ -51,10 +73,14 @@ public class ClickGui extends Screen {
         // Modules
         int modulesX = panelX + categoryWidth + 8;
         int modulesY = panelY;
-        List<Module> modules = GattoClient.getInstance().getModuleManager().getModulesByCategory(selectedCategory);
+        List<Module> modules = GattoClient.getInstance().getModuleManager().getModulesByCategory(currentCat);
 
         int panelHeight = Math.max(220, modules.size() * (moduleHeight + 2) + 16);
         graphics.fill(modulesX, modulesY, modulesX + moduleWidth, modulesY + panelHeight, theme.panel);
+
+        if (modules.isEmpty()) {
+            graphics.drawString(font, "No modules", modulesX + 8, modulesY + 10, theme.textSecondary, false);
+        }
 
         int my = modulesY + 6;
         for (Module module : modules) {
@@ -105,8 +131,9 @@ public class ClickGui extends Screen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        List<Category> activeCats = getActiveCategories();
         int y = panelY;
-        for (Category cat : Category.values()) {
+        for (Category cat : activeCats) {
             if (mouseX >= panelX && mouseX <= panelX + categoryWidth && mouseY >= y && mouseY <= y + categoryHeight) {
                 selectedCategory = cat;
                 selectedModule = null;
@@ -116,9 +143,10 @@ public class ClickGui extends Screen {
             y += categoryHeight + 2;
         }
 
+        Category currentCat = ensureSelectedCategory();
         int modulesX = panelX + categoryWidth + 8;
         int my = panelY + 6;
-        List<Module> modules = GattoClient.getInstance().getModuleManager().getModulesByCategory(selectedCategory);
+        List<Module> modules = GattoClient.getInstance().getModuleManager().getModulesByCategory(currentCat);
         for (Module module : modules) {
             if (mouseX >= modulesX && mouseX <= modulesX + moduleWidth && mouseY >= my && mouseY <= my + moduleHeight) {
                 if (button == 0) {
