@@ -3,6 +3,11 @@ name: Build VexName Bridge
 on:
   push:
     branches: [vexname-bridge]
+  pull_request:
+    branches: [main]
+    paths:
+      - 'vexname-bridge/**'
+      - '.github/workflows/build-vexname-bridge.yml'
   workflow_dispatch:
 
 jobs:
@@ -33,6 +38,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: vexname-bridge
-          path: vexname-bridge/build/libs/*.jar
+          path: build/libs/*.jar
           if-no-files-found: error
           retention-days: 14
