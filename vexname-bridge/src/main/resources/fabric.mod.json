@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "vexname_bridge",
+  "version": "${version}",
+  "name": "VexName Bridge",
+  "description": "Player-specific active VexBot names and spawn shortcuts.",
+  "authors": ["Gatto"],
+  "environment": "server",
+  "entrypoints": {
+    "main": ["com.gatto.vexname.VexNameBridge"]
+  },
+  "depends": {
+    "fabricloader": ">=0.18.1",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
