@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: vexname-bridge
@@ -26,18 +26,19 @@ jobs:
           distribution: temurin
           java-version: '21'
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '9.2.0'
+      - name: Validate Gradle wrapper
+        uses: gradle/actions/wrapper-validation@v4
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x gradlew
 
       - name: Build
-        run: gradle build --no-daemon
+        run: ./gradlew build --no-daemon --refresh-dependencies
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
           name: vexname-bridge
-          path: build/libs/*.jar
+          path: vexname-bridge/build/libs/*.jar
           if-no-files-found: error
           retention-days: 14
